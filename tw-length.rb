@@ -37,13 +37,13 @@ module TwLength
         end
 
         it '.length with URI' do
-          TwLength.length('foobar http://example.com/').must_equal 29 + 1
+          TwLength.length('foobar http://example.com/').must_equal 29
           TwLength.length('だるい https://example.com/').must_equal 27
-          TwLength.length('𠮷野家 https://example.com/ http://example.com/').must_equal 50 + 1
+          TwLength.length('𠮷野家 https://example.com/ http://example.com/').must_equal 50
         end
 
         it 'is modular' do
-          system(%{ruby -e 'require "./tw-length"; TwLength'}).must_equal true
+          system(%{ruby -e 'require "./tw-length"; TwLengt'}).must_equal true
         end
       end
     end
