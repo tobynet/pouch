@@ -6,58 +6,92 @@
 module AlwaysNLength
   DEFAULT_MAX_LENGTH = 140
 
-  def self.convert(body, max_length = DEFAULT_MAX_LENGTH)
-      body = body.chomp
-      length = body.length
-      mod = max_length % length
-      ext = (0...length).to_a.sort_by{ rand }.take(mod)
-      return body.each_char.with_index.map{|c, i| c * (max_length / length + (ext.include?(i) ? 1 : 0)) }.join('')
+  class << self
+    def convert(body, max_length = DEFAULT_MAX_LENGTH)
+        body = body.chomp
+        length = body.length
+        mod = max_length % length
+        ext = (0...length).to_a.sort_by{ rand }.take(mod)
+        return body.each_char.with_index.map{|c, i| c * (max_length / length + (ext.include?(i) ? 1 : 0)) }.join('')
+    end
+
+    def run_test
+      require 'minitest/autorun'
+      begin
+        require 'minitest/pride'
+      rescue LoadError
+      end
+
+      describe AlwaysNLength do
+        describe ".convert" do
+          def shortly(text)
+            text.gsub(/(.)\1*/){$1}
+          end
+
+          it "should be 140 length" do
+            AlwaysNLength.convert("激ヤバ ").length.must_equal 140
+          end
+
+          it "works with short words" do
+            shortly(AlwaysNLength.convert("やばい")).must_equal "やばい"
+          end
+
+          it "works with middle words" do
+            shortly(AlwaysNLength.convert("みんなでワイワイ バーベキューなう")).must_equal "みんなでワイワイ バーベキューなう"
+          end
+        end
+
+        it 'is modular' do
+          system(%{ruby -e 'require "./140ize"; AlwaysNLength'}).must_equal true
+        end
+      end
+      
+    end
   end
 end
 
-case $PROGRAM_NAME
-when __FILE__
-  # ここにスクリプトをふつーに実行した場合をかきます
+if $PROGRAM_NAME == __FILE__
+  # Parse options
+  require 'optparse'
   program = File.basename($PROGRAM_NAME)
-  USAGE = <<-EOD
-usage: #{program} text [length]
 
-example:
+  opt = OptionParser.new do |opts|
+    opts.banner = '140ize: Text Length Maximizer'
+    opts.separator <<-EOD
+
+  吉吉吉吉吉吉吉吉吉吉吉吉吉吉吉吉
+  𠮷 Iresponsible design siries 𠮷
+  吉吉吉𠮷吉吉吉吉吉吉吉吉吉吉吉吉
+
+Usage: #{program} text [length]
+
+Examples:
     $ #{program} "みんなでワイワイ バーベキューなう"
     みみみみみみみみみんんんんんんんんななななななななでででででででででワワワワワワワワイイイイイイイイイワワワワワワワワイイイイイイイイ        バババババババババーーーーーーーーベベベベベベベベキキキキキキキキュュュュュュュューーーーーーーーななななななななうううううううう
   or
     $ echo "みんなでワイワイ バーベキューなう" | #{program}
     みみみみみみみみみんんんんんんんんんなななななななななででででででででワワワワワワワワイイイイイイイイイワワワワワワワワイイイイイイイイババババババババーーーーーーーーベベベベベベベベキキキキキキキキュュュュュュュューーーーーーーーななななななななうううううううう
-  EOD
 
-  require 'net/http'
+Options:
+  EOD
+    opts.on_tail('-t', '--test', 'Run test **FOR DEVELOPER** ') do
+      AlwaysNLength.run_test
+      exit
+    end
+
+    opts.on_tail('-h', '--help', 'Show this message') do
+      puts opts
+      exit 1
+    end
+  end
+  opt.parse!
+
   if $stdin.tty? && ARGV.empty?
-    puts USAGE
+    puts opt
+    exit 1
   else
     text = ARGV.shift || ARGF.read #|| "みんなでワイワイ バーベキューなう"
     length = (ARGV.shift || AlwaysNLength::DEFAULT_MAX_LENGTH).to_i
     puts AlwaysNLength.convert(text, length)
-  end
-
-when /rspec$/
-  # ここにテストをかきます(rspec経由で実行されたときはテストとみなします)
-  describe AlwaysNLength do
-    context ".convert" do
-      def shortly(text)
-        text.gsub(/(.)\1*/){$1}
-      end
-
-      it "should be 140 length" do
-        AlwaysNLength.convert("激ヤバ ").length.should == 140
-      end
-
-      it "works with short words" do
-        shortly(AlwaysNLength.convert("やばい")).should == "やばい"
-      end
-
-      it "works with middle words" do
-        shortly(AlwaysNLength.convert("みんなでワイワイ バーベキューなう")).should == "みんなでワイワイ バーベキューなう"
-      end
-    end
   end
 end
