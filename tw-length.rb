@@ -12,9 +12,9 @@ module TwLength
   class << self
     def length(message)
       # ref. https://github.com/shokai/tw/blob/v0.4.6/lib/tw/client/helper.rb
-      result = message.chars.size
+      result = message.chars.to_a.size
       message.scan(/https?:\/\/[^\s]+/).each do |x|
-        result += MAX_RESERVED_LENGTH - x.chars.size
+        result += MAX_RESERVED_LENGTH - x.chars.to_a.size
       end
       result
     end
@@ -37,13 +37,13 @@ module TwLength
         end
 
         it '.length with URI' do
-          TwLength.length('foobar http://example.com/').must_equal 29
+          TwLength.length('foobar http://example.com/').must_equal 30
           TwLength.length('だるい https://example.com/').must_equal 27
-          TwLength.length('𠮷野家 https://example.com/ http://example.com/').must_equal 50
+          TwLength.length('𠮷野家 https://example.com/ http://example.com/').must_equal 51
         end
 
         it 'is modular' do
-          system(%{ruby -e 'require "./tw-length"; TwLengt'}).must_equal true
+          system(%{ruby -e 'require "./tw-length"; TwLength'}).must_equal true
         end
       end
     end
