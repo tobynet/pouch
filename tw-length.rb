@@ -55,6 +55,9 @@ if $PROGRAM_NAME == __FILE__
   # Parse options
   require 'optparse'
   program_name = File.basename(__FILE__)
+
+  in_test_mode = false
+
   opt = OptionParser.new do |opts|
     opts.banner = 'TwLength: Irresponsible message length calculator for posting twitter'
     opts.separator <<-EOD
@@ -86,8 +89,7 @@ if $PROGRAM_NAME == __FILE__
     end
 
     opts.on_tail('-t', '--test', 'Run test **FOR DEVELOPER** ') do
-      TwLength.run_test
-      exit
+      in_test_mode = true
     end
 
     opts.on_tail('-h', '--help', 'Show this message') do
@@ -97,12 +99,13 @@ if $PROGRAM_NAME == __FILE__
   end
   opt.parse!
 
-  if $stdin.tty? && ARGV.empty?
+  if in_test_mode
+    TwLength.run_test
+  elsif $stdin.tty? && ARGV.empty?
     puts opt
     exit 1
-  else
+  elsif ! in_test_mode
     text = ARGV.shift || ARGF.read.chomp #|| 'みんなでワイワイ バーベキューなう'
+    TwLength.run(text)
   end
-
-  TwLength.run(text)
 end

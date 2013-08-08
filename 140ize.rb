@@ -55,6 +55,8 @@ if $PROGRAM_NAME == __FILE__
   require 'optparse'
   program = File.basename($PROGRAM_NAME)
 
+  in_test_mode = false
+
   opt = OptionParser.new do |opts|
     opts.banner = '140ize: Text Length Maximizer'
     opts.separator <<-EOD
@@ -75,8 +77,7 @@ Examples:
 Options:
   EOD
     opts.on_tail('-t', '--test', 'Run test **FOR DEVELOPER** ') do
-      AlwaysNLength.run_test
-      exit
+      in_test_mode = true
     end
 
     opts.on_tail('-h', '--help', 'Show this message') do
@@ -86,7 +87,9 @@ Options:
   end
   opt.parse!
 
-  if $stdin.tty? && ARGV.empty?
+  if in_test_mode
+    AlwaysNLength.run_test
+  elsif $stdin.tty? && ARGV.empty?
     puts opt
     exit 1
   else
