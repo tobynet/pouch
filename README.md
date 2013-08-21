@@ -3,6 +3,8 @@ pouch
 
 The small tools in my digital pouch.
 
+[![Build Status](https://travis-ci.org/toooooooby/pouch.png?branch=master)](https://travis-ci.org/toooooooby/pouch)
+
 Tools List
 ---------
 
