@@ -5,4 +5,4 @@ rvm:
 - jruby-19mode
 - rbx-19mode
 before_install:
-- sudo apt-get install -qq mecab
+- sudo apt-get -qq install mecab mecab-ipadic-utf8 mecab-jumandic-utf8 
