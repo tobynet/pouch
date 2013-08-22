@@ -6,6 +6,10 @@ desc 'Run unit tests'
 task :test do
   test_files = FileList['*.rb']
   test_files.each do |file|
-    ruby file, "--test"
+    if File.basename(file) == 'test_others.rb'
+      ruby file
+    else
+      ruby file, '--test'
+    end
   end
 end
