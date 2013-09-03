@@ -141,6 +141,8 @@ if $PROGRAM_NAME == __FILE__
 
 Usage: #{program} <url>
 
+Examples:
+    $ #{program} 'http://example.com/'
     [Example Domain](http://example.com/)
 
     $ #{program} -r 'http://example.com/'
