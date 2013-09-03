@@ -117,6 +117,9 @@ module MarkdownLink
           end
         end
 
+        it 'is modular' do
+          system(%{ruby -e 'require "./mkdlink"; MarkdownLink'}).must_equal true
+        end
       end
     end
   end
