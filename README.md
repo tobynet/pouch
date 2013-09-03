@@ -12,6 +12,7 @@ Tools List
 * AlwaysNLength(140ize.rb)    : Text Length Maximizer.
 * Pings(pings.sh)             : A poor ping tool for **Brace Expansion** like `192.168.1.{1..10}`
 * Katakanaizer(katakanaize.sh): Katakana converter with **mecab**
+* MkdLink(mkdlink.rb)         : Generate markdown link like `[Example Domain](http://example.com/)`
 
 Features
 --------
