@@ -43,7 +43,7 @@ module MarkdownLink
 
     # fetch_title_by_using_nokogiri(URI('http://example.com/')) => 'Example Domain'
     def fetch_title_by_using_nokogiri(uri)
-       Nokogiri::HTML(uri.read).title
+      Nokogiri::HTML(uri.read).title
     end
 
     # fetch_title_by_using_stdlib(URI('http://example.com/')) => 'Example Domain'
@@ -57,6 +57,7 @@ module MarkdownLink
     # Spec
     def run_test
       require 'minitest/autorun'
+      require 'minitest/mock'
       begin
         require 'minitest/pride'
       rescue LoadError
@@ -81,7 +82,7 @@ module MarkdownLink
           # TOOD: use Mock
           begin
             # Save environment
-            old_nokogiri = Object.const_get(:Nokogiri)
+            old_nokogiri = Object.const_get(:Nokogiri) if Object.const_defined?(:Nokogiri)
             old_verbose = $VERBOSE
             $VERBOSE = nil
 
@@ -98,7 +99,7 @@ module MarkdownLink
             end
           ensure
             # Restore environment
-            Object.const_set(:Nokogiri, old_nokogiri)
+            Object.const_set(:Nokogiri, old_nokogiri) if old_nokogiri
             $VERBOSE = old_verbose
           end
         end
