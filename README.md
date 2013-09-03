@@ -19,3 +19,8 @@ Features
 
 * All ruby script are MODULARIZED.
 
+Todos
+-----
+* Make as rubygem
+    * Separate tools as some rubygems
+* Rebuild as [text-converter services](http://wedata.net/databases/Text%20Conversion%20Services/items)
